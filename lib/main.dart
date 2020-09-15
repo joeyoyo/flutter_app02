@@ -13,63 +13,57 @@ class MyCheck extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyCheck> {
-  FocusNode focusNode1 = new FocusNode();
-  FocusNode focusNode2 = new FocusNode();
-  FocusScopeNode focusScopeNode;
+  int _selectedIndex = 1;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.red,
-            title: Text('输入框练习'),
-            textTheme:
-                TextTheme(title: TextStyle(fontSize: 18, color: Colors.yellow)),
-          ),
-          body: Center(
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  autofocus: true,
-                  focusNode: focusNode1, //关联focusNode1
-                  decoration: InputDecoration(labelText: "input1"),
-                ),
-                TextField(
-                  focusNode: focusNode2, //关联focusNode2
-                  decoration: InputDecoration(labelText: "input2"),
-                ),
-                Builder(
-                  builder: (ctx) {
-                    return Column(
-                      children: <Widget>[
-                        RaisedButton(
-                          child: Text("移动焦点"),
-                          onPressed: () {
-                            //将焦点从第一个TextField移到第二个TextField
-                            // 这是一种写法 FocusScope.of(context).requestFocus(focusNode2);
-                            // 这是第二种写法
-                            if (null == focusScopeNode) {
-                              focusScopeNode = FocusScope.of(context);
-                            }
-                            focusScopeNode.requestFocus(focusNode2);
-                          },
-                        ),
-                        RaisedButton(
-                          child: Text("隐藏键盘"),
-                          onPressed: () {
-                            // 当所有编辑框都失去焦点时键盘就会收起
-                            focusNode1.unfocus();
-                            focusNode2.unfocus();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ],
-            ),
-          )),
+        appBar: AppBar(
+          //导航栏
+          title: Text("App Name"),
+          leading: Builder(builder: (context) {
+            return IconButton(
+              icon: Icon(Icons.dashboard, color: Colors.white), //自定义图标
+              onPressed: () {
+                // 打开抽屉菜单
+                // Scaffold.of(context).openDrawer();
+              },
+            );
+          }),
+          actions: <Widget>[
+            //导航栏右侧菜单
+            IconButton(icon: Icon(Icons.share), onPressed: () {}),
+          ],
+        ),
+        // drawer: new MyDrawer(), //抽屉
+        bottomNavigationBar: BottomNavigationBar(
+          // 底部导航
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home), title: Text('Home')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.business), title: Text('Business')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.school), title: Text('School')),
+          ],
+          currentIndex: _selectedIndex,
+          fixedColor: Colors.blue,
+          onTap: _onItemTapped,
+        ),
+        floatingActionButton: FloatingActionButton(
+            //悬浮按钮
+            child: Icon(Icons.add),
+            onPressed: _onAdd),
+      ),
     );
   }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  void _onAdd() {}
 }
