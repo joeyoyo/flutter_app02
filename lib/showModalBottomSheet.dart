@@ -38,9 +38,8 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           RaisedButton(
             child: Text("对话框2"),
-            onPressed: () async {
-              int type = await _showModalBottomSheet();
-              print(type);
+            onPressed: () {
+              _showBottomSheet();
             },
           ),
         ],
@@ -48,8 +47,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<int> _showModalBottomSheet() {
-    return showModalBottomSheet<int>(
+// 返回的是一个controller
+  PersistentBottomSheetController<int> _showBottomSheet() {
+    return showBottomSheet<int>(
       context: context,
       builder: (BuildContext context) {
         return ListView.builder(
@@ -57,7 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               title: Text("$index"),
-              onTap: () => Navigator.of(context).pop(index),
+              // onTap: () {
+              //   // do something
+              //   print("$index");
+              //   Navigator.of(context).pop();
+              // },
             );
           },
         );
